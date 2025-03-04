@@ -46,7 +46,7 @@
   - **User Instructions**: Run `npm run seed` after implementation to populate initial data
 
 ## Core Components and Layout
-- [ ] Step 6: Implement app layout structure
+- [x] Step 6: Implement app layout structure
   - **Task**: Create the main application layout with sidebar and content area
   - **Files**:
     - `src/app/(main)/layout.tsx`: Main application layout
@@ -55,7 +55,7 @@
     - `src/components/layout/header.tsx`: Header component
   - **Step Dependencies**: Step 1
 
-- [ ] Step 7: Create shared UI components
+- [x] Step 7: Create shared UI components
   - **Task**: Implement reusable UI components needed across the application
   - **Files**:
     - `src/components/ui/avatar.tsx`: Avatar component
@@ -65,7 +65,7 @@
   - **Step Dependencies**: Step 6
   - **User Instructions**: Run `npx shadcn-ui@latest add avatar skeleton scroll-area`
 
-- [ ] Step 8: Implement client-side state management
+- [x] Step 8: Implement client-side state management
   - **Task**: Set up client-side state for managing UI state and caching
   - **Files**:
     - `src/lib/store/use-sidebar-state.ts`: Sidebar state management
