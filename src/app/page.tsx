@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -12,6 +13,20 @@ export default function Home() {
           height={38}
           priority
         />
+        
+        {/* ShadCN Button Component */}
+        <div className="flex flex-col gap-4 w-full items-center">
+          <h2 className="text-xl font-bold">ShadCN UI Components</h2>
+          <div className="flex gap-4">
+            <Button variant="default">Default Button</Button>
+            <Button variant="destructive">Destructive</Button>
+            <Button variant="outline">Outline</Button>
+            <Button variant="secondary">Secondary</Button>
+            <Button variant="ghost">Ghost</Button>
+            <Button variant="link">Link</Button>
+          </div>
+        </div>
+
         <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <li className="mb-2">
             Get started by editing{" "}

@@ -1,0 +1,5 @@
+# Project specific
+/public
+.env.local
+.favicon.ico
+
