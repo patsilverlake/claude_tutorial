@@ -1,13 +1,13 @@
 # Implementation Plan
 
 ## Complete Project Setup and Configuration
-- [ ] Step 1: Update package.json with required dependencies
+- [x] Step 1: Update package.json with required dependencies
   - **Task**: Add Supabase, Drizzle ORM, and other required dependencies
   - **Files**:
     - `package.json`: Add dependencies
   - **User Instructions**: Run `npm install @supabase/supabase-js drizzle-orm pg @vercel/postgres zustand date-fns nanoid`
 
-- [ ] Step 2: Configure Supabase and environment variables
+- [x] Step 2: Configure Supabase and environment variables
   - **Task**: Set up Supabase project and configure environment variables
   - **Files**:
     - `.env.local`: Add environment variables
@@ -19,7 +19,7 @@
     - Add DATABASE_URL to `.env.local` from Supabase connection string
 
 ## Database Schema and Models
-- [ ] Step 3: Define database schema
+- [x] Step 3: Define database schema
   - **Task**: Create schema definitions for channels, messages, and users
   - **Files**:
     - `src/db/schema/channels.ts`: Channel table schema
@@ -28,16 +28,16 @@
     - `src/db/schema/index.ts`: Export all schemas
   - **Step Dependencies**: Step 2
 
-- [ ] Step 4: Create database migration
+- [x] Step 4: Create database migration
   - **Task**: Generate and apply database migrations to create tables
   - **Files**:
     - `src/db/db.ts`: Update database client setup
   - **Step Dependencies**: Step 3
   - **User Instructions**: 
-    - Run `npx drizzle-kit generate:pg` to generate migrations
-    - Run `npx drizzle-kit push:pg` to apply migrations to the database
+    - Run `npx drizzle-kit generate` to generate migrations
+    - Run `npx drizzle-kit push` to apply migrations to the database
 
-- [ ] Step 5: Create seed data
+- [x] Step 5: Create seed data
   - **Task**: Create seed script to populate initial data (default channels and simulated users)
   - **Files**:
     - `src/lib/seed.ts`: Seed script
