@@ -3,60 +3,68 @@
 import React from "react"
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { MessageSquare, Users, Settings } from "lucide-react"
+import { MessageSquare, Users, Settings, AtSign } from "lucide-react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useSidebarState } from "@/lib/store/use-sidebar-state"
 import { useMd } from "@/lib/hooks/use-media-query"
 import { ChannelList } from "@/components/channels/channel-list"
 import { DMList } from "@/components/dm/dm-list"
+import { useUnreadState } from "@/lib/store/use-unread-state"
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function Sidebar({ className, ...props }: SidebarProps) {
   const { isOpen } = useSidebarState()
   const isMd = useMd()
+  const pathname = usePathname()
   
   // On desktop, always show sidebar
   // On mobile, only show if isOpen is true
-  const showSidebar = isMd || isOpen
-  
-  if (!showSidebar) return null
+  if (!isOpen && !isMd) {
+    return null
+  }
   
   return (
-    <div 
+    <div
       className={cn(
-        "fixed inset-y-0 left-0 z-40 flex h-full w-60 flex-col bg-slate-950 md:relative",
+        "fixed inset-y-0 left-0 z-40 flex h-full w-64 flex-col bg-slate-900 text-white",
         className
-      )} 
+      )}
       {...props}
     >
       <div className="flex h-14 items-center border-b border-slate-800 px-4">
-        <Link href="/" className="flex items-center gap-2">
-          <MessageSquare className="h-6 w-6 text-white" />
-          <span className="text-lg font-semibold text-white">Slack Clone</span>
-        </Link>
+        <h1 className="text-xl font-bold">Slack Clone</h1>
       </div>
-      <ScrollArea className="flex-1 px-2 py-4">
-        <div className="space-y-4">
-          <div>
-            <h3 className="mb-2 px-4 text-sm font-semibold text-slate-400">
-              Channels
-            </h3>
-            <ChannelList />
+      
+      <div className="flex-1 overflow-hidden">
+        <ScrollArea className="h-full">
+          <div className="flex flex-col gap-2 p-2">
+            <div className="px-3 py-2">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xs font-semibold uppercase text-slate-400">Channels</h2>
+              </div>
+              <ChannelList />
+            </div>
+            
+            <div className="px-3 py-2">
+              <h2 className="text-xs font-semibold uppercase text-slate-400">Direct Messages</h2>
+              <DMList />
+            </div>
+            <div className="px-3 py-2">
+              <Link
+                href="/mentions"
+                className={cn(
+                  "flex items-center gap-2 px-3 py-2 text-slate-400 hover:bg-slate-800 hover:text-white rounded-md transition-colors",
+                  pathname === "/mentions" && "bg-slate-800 text-white"
+                )}
+              >
+                <AtSign className="h-5 w-5" />
+                <span>Mentions</span>
+              </Link>
+            </div>
           </div>
-          <div>
-            <h3 className="mb-2 px-4 text-sm font-semibold text-slate-400">
-              Direct Messages
-            </h3>
-            <DMList />
-          </div>
-        </div>
-      </ScrollArea>
-      <div className="flex h-14 items-center border-t border-slate-800 px-4">
-        <button className="flex items-center gap-2 text-slate-400 hover:text-white">
-          <Settings className="h-5 w-5" />
-          <span className="text-sm font-medium">Settings</span>
-        </button>
+        </ScrollArea>
       </div>
     </div>
   )

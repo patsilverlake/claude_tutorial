@@ -1,11 +1,13 @@
 "use server";
 
 import { db } from "@/db/db";
-import { messages, users } from "@/db/schema";
-import { Message, User } from "@/types";
+import { messages, users, channels } from "@/db/schema";
+import { Message, User, Channel } from "@/types";
 import { nanoid } from "nanoid";
 import { eq, and, desc, isNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { currentProfile } from "@/lib/current-profile";
+import { redirect } from "next/navigation";
 
 /**
  * Get messages for a channel
@@ -235,5 +237,45 @@ export async function deleteMessage(id: string): Promise<void> {
   } catch (error) {
     console.error(`Error deleting message with ID ${id}:`, error);
     throw new Error("Failed to delete message");
+  }
+}
+
+/**
+ * Get all messages across all channels
+ */
+export async function getAllMessages(): Promise<Message[]> {
+  const profile = await currentProfile();
+  if (!profile) redirect("/");
+  
+  try {
+    const result = await db
+      .select({
+        id: messages.id,
+        content: messages.content,
+        userId: messages.userId,
+        channelId: messages.channelId,
+        parentId: messages.parentId,
+        isEdited: messages.isEdited,
+        createdAt: messages.createdAt,
+        updatedAt: messages.updatedAt,
+        // Join with users table to get user information
+        user: users,
+        // Join with channels table to get channel information
+        channel: channels,
+      })
+      .from(messages)
+      .leftJoin(users, eq(messages.userId, users.id))
+      .leftJoin(channels, eq(messages.channelId, channels.id))
+      .orderBy(desc(messages.createdAt));
+    
+    // Transform the result to match the Message type
+    return result.map(item => ({
+      ...item,
+      user: item.user as User | undefined,
+      channel: item.channel as Channel | undefined
+    }));
+  } catch (error) {
+    console.error("[GET_ALL_MESSAGES_ERROR]", error);
+    return [];
   }
 } 

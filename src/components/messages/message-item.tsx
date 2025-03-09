@@ -3,29 +3,54 @@
 import React, { useState } from "react";
 import { Message } from "@/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { formatMessageDate, formatRelativeTime, formatMessageContent } from "@/lib/utils";
+import { formatMessageDate, formatRelativeTime, formatMessageContent, highlightMentions, containsMention } from "@/lib/utils";
 import { MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { MessageActions } from "./message-actions";
 import { MessageEdit } from "./message-edit";
 import { MessageDeleteDialog } from "./message-delete-dialog";
+import { useUnreadState } from "@/lib/store/use-unread-state";
+import { cn } from "@/lib/utils";
 
 interface MessageItemProps {
   message: Message;
   showActions?: boolean;
+  highlightIfMentioned?: boolean;
+  currentUserName?: string; // Pass the current user's name from server component
 }
 
-export function MessageItem({ message, showActions = true }: MessageItemProps) {
+export function MessageItem({ 
+  message, 
+  showActions = true,
+  highlightIfMentioned = true,
+  currentUserName = ""
+}: MessageItemProps) {
   const { user } = message;
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const { markMessageAsRead, isMessageRead } = useUnreadState();
+  const [isRead, setIsRead] = useState(false);
+  
+  // Mark message as read when it's viewed
+  React.useEffect(() => {
+    if (message.id && !isMessageRead(message.id)) {
+      markMessageAsRead(message.id);
+      setIsRead(true);
+    } else {
+      setIsRead(isMessageRead(message.id));
+    }
+  }, [message.id, markMessageAsRead, isMessageRead]);
   
   if (!user) {
     return null;
   }
   
-  // Format the message content with basic markdown
-  const formattedContent = formatMessageContent(message.content);
+  // Check if message mentions current user
+  const isMentioned = currentUserName && 
+    containsMention(message.content, currentUserName);
+  
+  // Format the message content with basic markdown and highlight mentions
+  const formattedContent = highlightMentions(formatMessageContent(message.content));
   
   // Handle edit button click
   const handleEdit = () => {
@@ -48,7 +73,10 @@ export function MessageItem({ message, showActions = true }: MessageItemProps) {
   };
   
   return (
-    <div className="group flex items-start gap-3 py-2 px-4 hover:bg-slate-50">
+    <div className={cn(
+      "group flex items-start gap-3 py-2 px-4 hover:bg-slate-50",
+      highlightIfMentioned && isMentioned && !isRead && "bg-yellow-50"
+    )}>
       <Avatar className="h-9 w-9 mt-1">
         {user.imageUrl ? (
           <AvatarImage src={user.imageUrl} alt={user.name} />
@@ -67,6 +95,11 @@ export function MessageItem({ message, showActions = true }: MessageItemProps) {
           </span>
           {message.isEdited && (
             <span className="text-xs text-slate-500">(edited)</span>
+          )}
+          {highlightIfMentioned && isMentioned && !isRead && (
+            <span className="text-xs bg-yellow-200 text-yellow-800 px-1.5 py-0.5 rounded-full">
+              Mention
+            </span>
           )}
         </div>
         

@@ -3,6 +3,7 @@ import { getChannelById } from "@/lib/actions/channels";
 import { getChannelMessages } from "@/lib/actions/messages";
 import { MessageList } from "@/components/messages/message-list";
 import { MessageInput } from "@/components/messages/message-input";
+import { ChannelSearch } from "@/components/search/channel-search";
 
 interface ChannelPageProps {
   params: {
@@ -29,7 +30,12 @@ export default async function ChannelPage({ params }: ChannelPageProps) {
   return (
     <div className="flex flex-col h-full">
       <div className="border-b border-slate-200 p-4">
-        <h1 className="text-xl font-semibold">#{channel.name}</h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-xl font-semibold">#{channel.name}</h1>
+          <div className="w-1/3">
+            <ChannelSearch channelId={channelId} channelName={channel.name} />
+          </div>
+        </div>
         {channel.description && (
           <p className="text-sm text-slate-500 mt-1">{channel.description}</p>
         )}

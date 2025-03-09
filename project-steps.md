@@ -158,7 +158,7 @@
   - **Step Dependencies**: Step 13
 
 ## Search Functionality
-- [ ] Step 20: Implement channel search
+- [x] Step 20: Implement channel search
   - **Task**: Create search functionality within a channel
   - **Files**:
     - `src/components/search/channel-search.tsx`: Channel search component
@@ -166,7 +166,7 @@
     - `src/app/(main)/channels/[channelId]/search/page.tsx`: Channel search results page
   - **Step Dependencies**: Step 12
 
-- [ ] Step 21: Implement global search
+- [x] Step 21: Implement global search
   - **Task**: Create global search across all channels and DMs
   - **Files**:
     - `src/components/search/global-search.tsx`: Global search component
@@ -176,7 +176,7 @@
   - **User Instructions**: Run `npm install cmdk` for command menu component
 
 ## Notification System
-- [ ] Step 22: Implement unread indicators
+- [x] Step 22: Implement unread indicators
   - **Task**: Add unread message indicators for channels and DMs
   - **Files**:
     - `src/components/channels/channel-item.tsx`: Update with unread indicator
@@ -184,7 +184,7 @@
     - `src/lib/store/use-unread-state.ts`: Client state for unread messages
   - **Step Dependencies**: Step 12, Step 17
 
-- [ ] Step 23: Implement mention highlighting
+- [x] Step 23: Implement mention highlighting
   - **Task**: Add highlighting for messages that mention the user
   - **Files**:
     - `src/components/messages/message-item.tsx`: Update to highlight mentions
