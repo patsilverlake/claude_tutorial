@@ -1,7 +1,8 @@
-import { redirect } from "next/navigation";
-import { getChannels } from "@/lib/actions/channels";
 import { Container } from "@/components/ui/container";
 import { AlertCircle } from "lucide-react";
+import { RefreshButtonClient } from "@/components/ui/refresh-button-client";
+import { ChannelRedirect } from "@/components/channels/channel-redirect";
+import { getChannels } from "@/lib/actions/channels";
 
 export default async function HomePage() {
   try {
@@ -14,8 +15,8 @@ export default async function HomePage() {
       const generalChannel = channels.find(channel => channel.name === "general");
       const defaultChannel = generalChannel || channels[0];
       
-      // Redirect to the default channel
-      redirect(`/channels/${defaultChannel.id}`);
+      // Use client component for redirect instead of server redirect
+      return <ChannelRedirect channelId={defaultChannel.id} />;
     }
     
     // If no channels were found (empty array), show the placeholder UI
@@ -58,12 +59,7 @@ export default async function HomePage() {
           <p className="text-slate-600 mb-6 text-center max-w-lg">
             We&apos;re having trouble connecting to the server. Please try refreshing the page or come back later.
           </p>
-          <button 
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-slate-800 text-white rounded-md hover:bg-slate-700 transition-colors"
-          >
-            Refresh Page
-          </button>
+          <RefreshButtonClient />
         </div>
       </Container>
     );

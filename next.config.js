@@ -11,13 +11,11 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   experimental: {
-    // Enable the new app router
-    appDir: true,
-    // Optimize server components
-    serverComponentsExternalPackages: [],
     // Improve route group handling
     optimizePackageImports: ['lucide-react'],
   },
+  // External packages that should be treated as server packages
+  serverExternalPackages: [],
   output: 'standalone',
   async rewrites() {
     return [
