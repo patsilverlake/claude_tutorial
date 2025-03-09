@@ -12,7 +12,7 @@ import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/db/db";
 import { channels } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { AlertCircle, Loader2 } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 
 interface DMPageProps {
   params: {

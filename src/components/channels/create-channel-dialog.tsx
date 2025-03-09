@@ -70,7 +70,7 @@ export function CreateChannelDialog({ isOpen, onClose, onChannelCreated }: Creat
         <DialogHeader>
           <DialogTitle>Create a new channel</DialogTitle>
           <DialogDescription>
-            Channels are where your team communicates. They're best when organized around a topic.
+            Channels are where your team communicates. They&apos;re best when organized around a topic.
           </DialogDescription>
         </DialogHeader>
         

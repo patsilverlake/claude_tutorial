@@ -14,7 +14,7 @@ interface Toast extends ToastOptions {
 
 // Global store for toasts
 let toasts: Toast[] = [];
-let listeners: Function[] = [];
+let listeners: ((toasts: Toast[]) => void)[] = [];
 
 // Notify listeners when toasts change
 const notifyListeners = () => {

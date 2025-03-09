@@ -110,7 +110,7 @@ export function MessageList({
       const tempMessages = existingMessages.filter(msg => msg.id.startsWith('temp-'));
       
       // Merge server messages with temp messages
-      setMessages(channelId, [...storeMessages, ...tempMessages] as any);
+      setMessages(channelId, [...storeMessages, ...tempMessages] as Message[]);
     }
   }, [channelId, messages, setMessages]);
   

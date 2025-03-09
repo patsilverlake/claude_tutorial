@@ -24,7 +24,7 @@ export function SearchCommand() {
     
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [toggleSearch]);
   
   return (
     <>

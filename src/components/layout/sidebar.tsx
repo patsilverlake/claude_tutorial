@@ -3,17 +3,18 @@
 import React, { useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { MessageSquare, Users, Settings, AtSign, X } from "lucide-react"
+import { AtSign, X } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useSidebarState } from "@/lib/store/use-sidebar-state"
 import { useMd } from "@/lib/hooks/use-media-query"
 import { ChannelList } from "@/components/channels/channel-list"
 import { DMList } from "@/components/dm/dm-list"
-import { useUnreadState } from "@/lib/store/use-unread-state"
 import { Button } from "@/components/ui/button"
 
-interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
+  // Props for the sidebar component
+}
 
 export function Sidebar({ className, ...props }: SidebarProps) {
   const { isOpen, close } = useSidebarState()

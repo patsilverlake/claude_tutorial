@@ -8,7 +8,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function DMList() {
   const [users, setUsers] = useState<User[]>([]);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -19,7 +18,6 @@ export function DMList() {
         
         // Get the current user (for demo purposes)
         const currentUserData = await getCurrentUser();
-        setCurrentUser(currentUserData);
         
         // Get all other users for DMs
         const userData = currentUserData 

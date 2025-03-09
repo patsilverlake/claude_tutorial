@@ -3,7 +3,7 @@
 import { db } from "@/db/db";
 import { messages, users, channels } from "@/db/schema";
 import { Message, User, Channel } from "@/types";
-import { eq, like, ilike, and, or, desc } from "drizzle-orm";
+import { eq, ilike, and, or, desc } from "drizzle-orm";
 import { currentProfile } from "@/lib/current-profile";
 import { redirect } from "next/navigation";
 

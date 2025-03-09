@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/actions/users";
 import { useMessagesState } from "@/lib/store/use-messages-state";
 import { toast } from "@/components/ui/use-toast";
+import { User } from "@/types";
 
 interface MessageInputProps {
   channelId: string;
@@ -26,7 +27,7 @@ export function MessageInput({
   const [content, setContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
-  const [currentUserProfile, setCurrentUserProfile] = useState<any>(null);
+  const [currentUserProfile, setCurrentUserProfile] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { incrementChannelUnread, incrementDmUnread } = useUnreadState();

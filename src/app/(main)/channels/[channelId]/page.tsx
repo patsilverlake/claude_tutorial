@@ -5,7 +5,7 @@ import { getChannelMessages } from "@/lib/actions/messages";
 import { MessageList } from "@/components/messages/message-list";
 import { MessageInput } from "@/components/messages/message-input";
 import { ChannelSearch } from "@/components/search/channel-search";
-import { FullChannelSkeleton, ChannelHeaderSkeleton, MessageSkeleton } from "@/components/messages/loading-skeleton";
+import { FullChannelSkeleton, MessageSkeleton } from "@/components/messages/loading-skeleton";
 import { RefreshButton } from "@/components/ui/refresh-button";
 import { revalidatePath } from "next/cache";
 import { currentProfile } from "@/lib/current-profile";

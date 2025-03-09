@@ -56,7 +56,7 @@ export default async function HomePage() {
           <AlertCircle className="h-12 w-12 text-red-500 mb-4" />
           <h1 className="text-2xl font-bold mb-2">Something went wrong</h1>
           <p className="text-slate-600 mb-6 text-center max-w-lg">
-            We're having trouble connecting to the server. Please try refreshing the page or come back later.
+            We&apos;re having trouble connecting to the server. Please try refreshing the page or come back later.
           </p>
           <button 
             onClick={() => window.location.reload()}

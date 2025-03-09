@@ -7,7 +7,6 @@ import { getChannels } from "@/lib/actions/channels";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CreateChannelButton } from "./create-channel-button";
 import { AlertCircle, RefreshCw } from "lucide-react";
-import { checkDatabaseConnection } from "@/db/db";
 
 export function ChannelList() {
   const [channels, setChannels] = useState<Channel[]>([]);

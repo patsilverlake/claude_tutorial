@@ -46,7 +46,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     <div className="flex flex-col h-full">
       <div className="border-b border-slate-200 p-4">
         <h1 className="text-xl font-semibold">
-          Search results for <span className="text-blue-600">"{query}"</span>
+          Search results for <span className="text-blue-600">&quot;{query}&quot;</span>
         </h1>
         <p className="text-sm text-slate-500 mt-1">
           {messages.length + users.length + channels.length} results found
@@ -162,7 +162,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             {/* No results */}
             {!hasResults && (
               <div className="text-center py-12">
-                <p className="text-slate-500 mb-2">No results found for "{query}"</p>
+                <p className="text-slate-500 mb-2">No results found for &quot;{query}&quot;</p>
                 <p className="text-sm text-slate-400">Try a different search term</p>
               </div>
             )}

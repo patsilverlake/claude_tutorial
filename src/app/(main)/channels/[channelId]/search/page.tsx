@@ -56,7 +56,7 @@ export default async function SearchPage({ params, searchParams }: SearchPagePro
               <h2 className="text-lg font-semibold">
                 {query ? (
                   <>
-                    Search results for <span className="text-blue-600">"{query}"</span>
+                    Search results for <span className="text-blue-600">&quot;{query}&quot;</span>
                   </>
                 ) : (
                   "Search for messages in this channel"
@@ -77,7 +77,7 @@ export default async function SearchPage({ params, searchParams }: SearchPagePro
               </div>
             ) : query ? (
               <div className="text-center py-8">
-                <p className="text-slate-500">No messages found matching "{query}"</p>
+                <p className="text-slate-500">No messages found matching &quot;{query}&quot;</p>
                 <p className="text-sm text-slate-400 mt-1">Try a different search term</p>
               </div>
             ) : null}
