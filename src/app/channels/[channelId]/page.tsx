@@ -1,22 +1,25 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { getChannelById } from "@/lib/actions/channels";
-import { getChannelMessages } from "@/lib/actions/messages";
 import { MessageList } from "@/components/messages/message-list";
 import { MessageInput } from "@/components/messages/message-input";
 import { ChannelSearch } from "@/components/search/channel-search";
-import { FullChannelSkeleton, MessageSkeleton } from "@/components/messages/loading-skeleton";
-import { RefreshButton } from "@/components/ui/refresh-button";
+import { FullChannelSkeleton } from "@/components/messages/loading-skeleton";
 import { notFound, useParams } from "next/navigation";
 import { Channel, Message } from "@/types";
+import { getChannelData } from "@/lib/actions/channel-actions";
+
+// Define a type for our channel data
+interface ChannelData {
+  channel: Channel | null;
+  messages: Message[];
+}
 
 export default function ChannelPage() {
   const params = useParams();
   const channelId = params?.channelId as string;
   
-  const [channel, setChannel] = useState<Channel | null>(null);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [channelData, setChannelData] = useState<ChannelData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,16 +28,9 @@ export default function ChannelPage() {
       try {
         setLoading(true);
         
-        // Fetch channel data
-        const channelData = await getChannelById(channelId);
-        if (!channelData) {
-          return notFound();
-        }
-        setChannel(channelData);
-        
-        // Fetch messages
-        const messagesData = await getChannelMessages(channelId);
-        setMessages(messagesData || []);
+        // Use the server action to get channel data
+        const data = await getChannelData(channelId);
+        setChannelData(data);
         
         setLoading(false);
       } catch (err) {
@@ -70,9 +66,11 @@ export default function ChannelPage() {
   }
 
   // Show 404 if channel not found
-  if (!channel) {
+  if (!channelData || !channelData.channel) {
     return notFound();
   }
+
+  const { channel, messages } = channelData;
 
   // Render actual channel content
   return (
@@ -97,8 +95,9 @@ export default function ChannelPage() {
           messages={messages}
           onRefresh={async () => {
             try {
-              const refreshedMessages = await getChannelMessages(channelId);
-              setMessages(refreshedMessages || []);
+              // Refresh channel data
+              const refreshedData = await getChannelData(channelId);
+              setChannelData(refreshedData);
             } catch (err) {
               console.error("Error refreshing messages:", err);
             }

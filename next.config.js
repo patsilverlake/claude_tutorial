@@ -12,6 +12,11 @@ const nextConfig = {
   },
   output: 'standalone',
   // No redirects or complex configurations - we'll handle routing on the client side
+  experimental: {
+    serverActions: {
+      allowedOrigins: ["vercel.app", "localhost:3000"]
+    }
+  },
 };
 
 module.exports = nextConfig; 
