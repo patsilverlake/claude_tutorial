@@ -1,13 +1,4 @@
 {
-  "version": 2,
-  "framework": "nextjs",
-  "routes": [
-    { "src": "^/$", "dest": "/main" },
-    { "src": "^/channels/([^/]+)$", "dest": "/channels/[channelId]?channelId=$1" },
-    { "src": "^/channels/([^/]+)/search$", "dest": "/channels/[channelId]/search?channelId=$1" },
-    { "src": "^/channels/([^/]+)/thread/([^/]+)$", "dest": "/channels/[channelId]/thread/[messageId]?channelId=$1&messageId=$2" },
-    { "src": "^/dm/([^/]+)$", "dest": "/dm/[userId]?userId=$1" },
-    { "src": "^/mentions$", "dest": "/mentions" },
-    { "src": "^/(main)/(.*)", "dest": "/main/$2" }
-  ]
+  "buildCommand": "npm run vercel-build",
+  "framework": "nextjs"
 } 
