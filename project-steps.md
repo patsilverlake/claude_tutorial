@@ -142,7 +142,7 @@
   - **Step Dependencies**: Step 13, Step 16
 
 ## Message Features
-- [ ] Step 18: Implement message threading
+- [x] Step 18: Implement message threading
   - **Task**: Add support for message threads and replies
   - **Files**:
     - `src/components/messages/message-thread.tsx`: Thread display component
@@ -150,7 +150,7 @@
     - `src/app/(main)/channels/[channelId]/thread/[messageId]/page.tsx`: Thread page
   - **Step Dependencies**: Step 13
 
-- [ ] Step 19: Implement message editing and deletion
+- [x] Step 19: Implement message editing and deletion
   - **Task**: Add ability to edit and delete messages
   - **Files**:
     - `src/components/messages/message-edit.tsx`: Message editing component

@@ -1,12 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Message } from "@/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatMessageDate, formatRelativeTime, formatMessageContent } from "@/lib/utils";
 import { MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { MessageActions } from "./message-actions";
+import { MessageEdit } from "./message-edit";
+import { MessageDeleteDialog } from "./message-delete-dialog";
 
 interface MessageItemProps {
   message: Message;
@@ -15,6 +17,8 @@ interface MessageItemProps {
 
 export function MessageItem({ message, showActions = true }: MessageItemProps) {
   const { user } = message;
+  const [isEditing, setIsEditing] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   
   if (!user) {
     return null;
@@ -22,6 +26,26 @@ export function MessageItem({ message, showActions = true }: MessageItemProps) {
   
   // Format the message content with basic markdown
   const formattedContent = formatMessageContent(message.content);
+  
+  // Handle edit button click
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+  
+  // Handle cancel edit
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+  };
+  
+  // Handle delete button click
+  const handleDelete = () => {
+    setIsDeleteDialogOpen(true);
+  };
+  
+  // Handle close delete dialog
+  const handleCloseDeleteDialog = () => {
+    setIsDeleteDialogOpen(false);
+  };
   
   return (
     <div className="group flex items-start gap-3 py-2 px-4 hover:bg-slate-50">
@@ -46,28 +70,43 @@ export function MessageItem({ message, showActions = true }: MessageItemProps) {
           )}
         </div>
         
-        <div className="mt-1 text-sm">
-          <div dangerouslySetInnerHTML={{ __html: formattedContent }} />
-        </div>
+        {isEditing ? (
+          <div className="mt-1">
+            <MessageEdit message={message} onCancel={handleCancelEdit} />
+          </div>
+        ) : (
+          <div className="mt-1 text-sm">
+            <div dangerouslySetInnerHTML={{ __html: formattedContent }} />
+          </div>
+        )}
         
-        {showActions && (
+        {showActions && !isEditing && (
           <div className="mt-2 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <Link
-              href={`/channels/${message.channelId}/thread/${message.id}`}
-              className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-700"
-            >
-              <MessageSquare className="h-3.5 w-3.5" />
-              <span>Reply</span>
-            </Link>
+            {message.channelId && (
+              <Link
+                href={`/channels/${message.channelId}/thread/${message.id}`}
+                className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-700"
+              >
+                <MessageSquare className="h-3.5 w-3.5" />
+                <span>Reply</span>
+              </Link>
+            )}
             
             <MessageActions 
               message={message}
-              onEdit={() => console.log("Edit message:", message.id)}
-              onDelete={() => console.log("Delete message:", message.id)}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
             />
           </div>
         )}
       </div>
+      
+      {/* Delete confirmation dialog */}
+      <MessageDeleteDialog 
+        message={message}
+        isOpen={isDeleteDialogOpen}
+        onClose={handleCloseDeleteDialog}
+      />
     </div>
   );
 } 
