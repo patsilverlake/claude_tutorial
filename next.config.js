@@ -11,37 +11,7 @@ const nextConfig = {
     unoptimized: true,
   },
   output: 'standalone',
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/main',
-        permanent: false,
-      },
-    ];
-  },
-  async rewrites() {
-    return {
-      beforeFiles: [
-        {
-          source: '/channels/:channelId',
-          destination: '/channels/[channelId]',
-        },
-        {
-          source: '/channels/:channelId/search',
-          destination: '/channels/[channelId]/search',
-        },
-        {
-          source: '/channels/:channelId/thread/:messageId',
-          destination: '/channels/[channelId]/thread/[messageId]',
-        },
-        {
-          source: '/dm/:userId',
-          destination: '/dm/[userId]',
-        },
-      ],
-    };
-  },
+  // No redirects or complex configurations - we'll handle routing on the client side
 };
 
 module.exports = nextConfig; 
