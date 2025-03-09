@@ -10,6 +10,24 @@ const nextConfig = {
     // your project has type errors.
     ignoreBuildErrors: true,
   },
+  experimental: {
+    // Enable the new app router
+    appDir: true,
+    // Optimize server components
+    serverComponentsExternalPackages: [],
+    // Improve route group handling
+    optimizePackageImports: ['lucide-react'],
+  },
+  output: 'standalone',
+  async rewrites() {
+    return [
+      // Handle route group issues by explicitly mapping routes
+      {
+        source: '/',
+        destination: '/main',
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig; 
