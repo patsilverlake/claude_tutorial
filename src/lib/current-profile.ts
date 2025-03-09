@@ -1,19 +1,14 @@
-import { createServerClient } from '@/lib/supabase/server';
-import { db } from '@/db/db';
+import { getCurrentUser } from '@/lib/actions/users';
 
 export const currentProfile = async () => {
-  const supabase = await createServerClient();
-  
-  const { data: { session } } = await supabase.auth.getSession();
-  
-  if (!session) {
+  try {
+    console.log("Getting current profile...");
+    // Use our getCurrentUser function instead of Supabase
+    const profile = await getCurrentUser();
+    console.log("Current profile:", profile);
+    return profile;
+  } catch (error) {
+    console.error("Error getting current profile:", error);
     return null;
   }
-  
-  // Get the profile from the database using Drizzle
-  const profile = await db.query.users.findFirst({
-    where: (users, { eq }) => eq(users.id, session.user.id)
-  });
-  
-  return profile;
 }; 

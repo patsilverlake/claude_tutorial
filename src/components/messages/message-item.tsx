@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Message } from "@/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatMessageDate, formatRelativeTime, formatMessageContent, highlightMentions, containsMention } from "@/lib/utils";
@@ -30,6 +30,20 @@ export function MessageItem({
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { markMessageAsRead, isMessageRead } = useUnreadState();
   const [isRead, setIsRead] = useState(false);
+  const [relativeTime, setRelativeTime] = useState<string>("recently");
+  
+  console.log("Rendering MessageItem:", { 
+    messageId: message.id, 
+    content: message.content,
+    userId: message.userId,
+    channelId: message.channelId,
+    user: user ? { id: user.id, name: user.name } : null
+  });
+  
+  // Update relative time on client-side only to avoid hydration errors
+  useEffect(() => {
+    setRelativeTime(formatRelativeTime(message.createdAt));
+  }, [message.createdAt]);
   
   // Mark message as read when it's viewed
   React.useEffect(() => {
@@ -42,6 +56,7 @@ export function MessageItem({
   }, [message.id, markMessageAsRead, isMessageRead]);
   
   if (!user) {
+    console.error("MessageItem: User is missing for message:", message.id);
     return null;
   }
   
@@ -91,7 +106,7 @@ export function MessageItem({
         <div className="flex items-center gap-2">
           <span className="font-semibold">{user.name}</span>
           <span className="text-xs text-slate-500" title={formatMessageDate(message.createdAt)}>
-            {formatRelativeTime(message.createdAt)}
+            {relativeTime}
           </span>
           {message.isEdited && (
             <span className="text-xs text-slate-500">(edited)</span>

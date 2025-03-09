@@ -5,6 +5,13 @@ import { users } from "@/db/schema";
 import { User } from "@/types";
 import { eq, ne } from "drizzle-orm";
 
+// Simple in-memory cache for users
+const userCache = new Map<string, User>();
+
+// Cache for current user
+let currentUserCache: { user: User | null, timestamp: number } | null = null;
+const CURRENT_USER_CACHE_TTL = 60000; // 1 minute in milliseconds
+
 /**
  * Get all users
  */
@@ -29,7 +36,28 @@ export async function getUsers(): Promise<User[]> {
  */
 export async function getUserById(id: string): Promise<User | null> {
   try {
+    console.log(`Fetching user with ID ${id}...`);
+    
+    // Check if user is in cache
+    if (userCache.has(id)) {
+      console.log(`User ${id} found in cache`);
+      return userCache.get(id) || null;
+    }
+    
+    // Not in cache, fetch from database
+    console.log(`User ${id} not in cache, querying database...`);
     const result = await db.select().from(users).where(eq(users.id, id));
+    
+    console.log(`Database query for user ${id} returned:`, result);
+    
+    if (result[0]) {
+      // Store in cache
+      userCache.set(id, result[0]);
+      console.log(`User ${id} stored in cache:`, result[0]);
+    } else {
+      console.log(`No user found with ID ${id}`);
+    }
+    
     return result[0] || null;
   } catch (error) {
     console.error(`Error fetching user with ID ${id}:`, error);
@@ -66,11 +94,35 @@ export async function getDirectMessageUsers(currentUserId: string): Promise<User
  */
 export async function getCurrentUser(): Promise<User | null> {
   try {
+    console.log("Fetching current user...");
+    
+    // Check if current user is in cache and not expired
+    const now = Date.now();
+    
+    if (currentUserCache && (now - currentUserCache.timestamp < CURRENT_USER_CACHE_TTL)) {
+      console.log("Using cached current user");
+      return currentUserCache.user;
+    }
+    
+    console.log("Cache miss or expired for current user, fetching from database...");
+    
     // For demo purposes, we'll use the first user as the current user
     const result = await db.select().from(users).limit(1);
+    console.log("Current user result:", result);
+    
+    // Store in cache
+    currentUserCache = {
+      user: result[0] || null,
+      timestamp: now
+    };
+    
     return result[0] || null;
   } catch (error) {
     console.error("Error fetching current user:", error);
+    if (error instanceof Error) {
+      console.error("Error message:", error.message);
+      console.error("Error stack:", error.stack);
+    }
     throw new Error("Failed to fetch current user");
   }
 } 

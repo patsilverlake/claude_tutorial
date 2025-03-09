@@ -23,6 +23,12 @@ export function formatMessageDate(date: Date): string {
  * Format a date as a relative time
  */
 export function formatRelativeTime(date: Date): string {
+  // Use a consistent format for server-side rendering to avoid hydration errors
+  if (typeof window === 'undefined') {
+    // On the server, use a stable representation
+    return 'recently';
+  }
+  // On the client, use the dynamic relative time
   return formatDistanceToNow(date, { addSuffix: true });
 }
 

@@ -13,17 +13,24 @@ import { revalidatePath } from "next/cache";
 export async function getChannels(): Promise<Channel[]> {
   try {
     console.log("Fetching channels...");
+    
+    // Use a simple query without complex timeout handling
     const result = await db.select().from(channels).orderBy(channels.name);
+    
     console.log("Channels fetched successfully:", result.length);
     return result;
   } catch (error) {
     console.error("Error fetching channels:", error);
+    
     // Log more details about the error
     if (error instanceof Error) {
       console.error("Error message:", error.message);
       console.error("Error stack:", error.stack);
     }
-    throw new Error("Failed to fetch channels");
+    
+    // Return empty array instead of throwing to prevent cascading errors
+    console.warn("Returning empty channels list due to database error");
+    return [];
   }
 }
 
