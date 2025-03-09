@@ -20,7 +20,12 @@ async function main() {
   }
 
   console.log("Connecting to database...");
-  const client = postgres(connectionString);
+  // Create a postgres client with SSL verification disabled for development
+  const client = postgres(connectionString, {
+    ssl: {
+      rejectUnauthorized: false // This allows self-signed certificates
+    }
+  });
   const db = drizzle(client);
 
   try {

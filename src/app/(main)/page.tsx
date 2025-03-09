@@ -1,6 +1,21 @@
+import { redirect } from "next/navigation";
+import { getChannels } from "@/lib/actions/channels";
 import { Container } from "@/components/ui/container"
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Fetch all channels
+  const channels = await getChannels();
+  
+  // Find the general channel, or use the first channel, or redirect to a placeholder
+  const generalChannel = channels.find(channel => channel.name === "general");
+  const defaultChannel = generalChannel || channels[0];
+  
+  if (defaultChannel) {
+    // Redirect to the default channel
+    redirect(`/channels/${defaultChannel.id}`);
+  }
+  
+  // If no channels exist, show a placeholder (this should rarely happen)
   return (
     <Container>
       <div className="flex flex-col items-center justify-center min-h-[calc(100vh-8rem)]">

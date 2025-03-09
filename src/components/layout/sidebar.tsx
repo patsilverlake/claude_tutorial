@@ -3,10 +3,12 @@
 import React from "react"
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { MessageSquare, Users, Settings, PlusCircle } from "lucide-react"
+import { MessageSquare, Users, Settings } from "lucide-react"
 import Link from "next/link"
 import { useSidebarState } from "@/lib/store/use-sidebar-state"
 import { useMd } from "@/lib/hooks/use-media-query"
+import { ChannelList } from "@/components/channels/channel-list"
+import { DMList } from "@/components/dm/dm-list"
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -29,7 +31,7 @@ export function Sidebar({ className, ...props }: SidebarProps) {
       {...props}
     >
       <div className="flex h-14 items-center border-b border-slate-800 px-4">
-        <Link href="/main" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <MessageSquare className="h-6 w-6 text-white" />
           <span className="text-lg font-semibold text-white">Slack Clone</span>
         </Link>
@@ -40,30 +42,13 @@ export function Sidebar({ className, ...props }: SidebarProps) {
             <h3 className="mb-2 px-4 text-sm font-semibold text-slate-400">
               Channels
             </h3>
-            <div className="space-y-1">
-              {/* Channel list will be added in Step 10 */}
-              <div className="flex items-center px-4 py-2 text-slate-400 hover:bg-slate-800 hover:text-white rounded-md">
-                <span># general</span>
-              </div>
-              <div className="flex items-center px-4 py-2 text-slate-400 hover:bg-slate-800 hover:text-white rounded-md">
-                <span># random</span>
-              </div>
-            </div>
-            <button className="flex items-center gap-2 px-4 py-2 mt-2 text-sm text-slate-400 hover:text-white">
-              <PlusCircle className="h-4 w-4" />
-              <span>Add Channel</span>
-            </button>
+            <ChannelList />
           </div>
           <div>
             <h3 className="mb-2 px-4 text-sm font-semibold text-slate-400">
               Direct Messages
             </h3>
-            <div className="space-y-1">
-              {/* DM list will be added in Step 16 */}
-              <div className="flex items-center px-4 py-2 text-slate-400 hover:bg-slate-800 hover:text-white rounded-md">
-                <span>Slackbot</span>
-              </div>
-            </div>
+            <DMList />
           </div>
         </div>
       </ScrollArea>

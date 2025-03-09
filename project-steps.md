@@ -74,14 +74,14 @@
   - **Step Dependencies**: Step 6
 
 ## Channel Functionality
-- [ ] Step 9: Implement channel data fetching
+- [x] Step 9: Implement channel data fetching
   - **Task**: Create server actions for fetching and manipulating channels
   - **Files**:
     - `src/lib/actions/channels.ts`: Server actions for channels
     - `src/types/index.ts`: Type definitions
   - **Step Dependencies**: Step 5
 
-- [ ] Step 10: Implement channel listing in sidebar
+- [x] Step 10: Implement channel listing in sidebar
   - **Task**: Create components to display and navigate channels in the sidebar
   - **Files**:
     - `src/components/channels/channel-list.tsx`: Channel list component
@@ -89,14 +89,14 @@
     - `src/app/(main)/page.tsx`: Homepage redirecting to default channel
   - **Step Dependencies**: Step 8, Step 9
 
-- [ ] Step 11: Implement message data fetching
+- [x] Step 11: Implement message data fetching
   - **Task**: Create server actions for fetching and manipulating messages
   - **Files**:
     - `src/lib/actions/messages.ts`: Server actions for messages
     - `src/lib/utils.ts`: Update utility functions
   - **Step Dependencies**: Step 5
 
-- [ ] Step 12: Create channel view and message display
+- [x] Step 12: Create channel view and message display
   - **Task**: Implement the channel view to display messages
   - **Files**:
     - `src/app/(main)/channels/[channelId]/page.tsx`: Channel page
@@ -104,36 +104,37 @@
     - `src/components/messages/message-item.tsx`: Individual message component
   - **Step Dependencies**: Step 10, Step 11
 
-- [ ] Step 13: Implement message input and creation
+- [x] Step 13: Implement message input and creation
   - **Task**: Create message input component and functionality for sending messages
   - **Files**:
     - `src/components/messages/message-input.tsx`: Message input component
     - `src/components/messages/message-actions.tsx`: Message action buttons
   - **Step Dependencies**: Step 12
 
-- [ ] Step 14: Create channel creation functionality
+- [x] Step 14: Create channel creation functionality
   - **Task**: Implement UI and logic for creating new channels
   - **Files**:
     - `src/components/channels/create-channel-dialog.tsx`: Channel creation dialog
     - `src/components/channels/create-channel-button.tsx`: Button to trigger dialog
+    - `src/components/channels/channel-list.tsx`: Updated to refresh after channel creation
   - **Step Dependencies**: Step 10
   - **User Instructions**: Run `npx shadcn-ui@latest add dialog`
 
 ## Direct Message Functionality
-- [ ] Step 15: Implement user data fetching
+- [x] Step 15: Implement user data fetching
   - **Task**: Create server actions for fetching simulated users
   - **Files**:
     - `src/lib/actions/users.ts`: Server actions for users
   - **Step Dependencies**: Step 5
 
-- [ ] Step 16: Set up direct message simulation
+- [x] Step 16: Set up direct message simulation
   - **Task**: Create components for displaying simulated direct message users
   - **Files**:
     - `src/components/dm/dm-list.tsx`: DM list component
     - `src/components/dm/dm-item.tsx`: Individual DM user list item
   - **Step Dependencies**: Step 8, Step 15
 
-- [ ] Step 17: Implement direct message view
+- [x] Step 17: Implement direct message view
   - **Task**: Create the direct message view for conversations with simulated users
   - **Files**:
     - `src/app/(main)/dm/[userId]/page.tsx`: Direct message page
