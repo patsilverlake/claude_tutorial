@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next",
+      "config": {
+        "buildCommand": "npm run vercel-build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(main)(.*)",
+      "dest": "/main$2"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+} 

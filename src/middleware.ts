@@ -13,13 +13,23 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // Block access to the (main) route group - redirect to /main instead
+  if (pathname.startsWith('/(main)') || pathname === '/(main)') {
+    // Redirect to the corresponding path in /main
+    const newPath = pathname.replace('/(main)', '/main');
+    url.pathname = newPath;
+    return NextResponse.redirect(url);
+  }
+
   return NextResponse.next();
 }
 
 // Only run this middleware on specific paths
 export const config = {
   matcher: [
-    // Match the root path
+    // Match the root path and any paths in the (main) route group
     '/',
+    '/(main)',
+    '/(main)/:path*',
   ],
 }; 

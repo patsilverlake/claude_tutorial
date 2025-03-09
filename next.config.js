@@ -26,6 +26,23 @@ const nextConfig = {
       },
     ];
   },
+  // Exclude problematic route groups from the build
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
+  distDir: '.next',
+  // Explicitly tell Next.js not to include (main) route group in the build
+  async headers() {
+    return [
+      {
+        source: '/(main)/:path*',
+        headers: [
+          {
+            key: 'x-robots-tag',
+            value: 'noindex',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig; 
