@@ -10,25 +10,29 @@ export function middleware(request: NextRequest) {
   const response = NextResponse.next();
   response.headers.set('X-Debug-Path', pathname);
   
-  // Handle root redirect
+  // Root redirect
   if (pathname === '/') {
     console.log('Middleware: Redirecting root path to /main');
     url.pathname = '/main';
     return NextResponse.redirect(url);
   }
 
-  // Handle specific routes
+  // Special handling for channel routes
   if (pathname.startsWith('/channels/') && !pathname.includes('[channelId]')) {
-    // Log channel path info
-    console.log(`Middleware: Processing channel path: ${pathname}`);
+    const channelId = pathname.split('/')[2]; // Extract the channel ID
+    
+    // If this is a direct channel URL (not a search or thread)
+    if (pathname === `/channels/${channelId}`) {
+      // Log for debugging
+      console.log(`Processing channel route for ID: ${channelId}`);
+      
+      // Make sure query parameter is present
+      url.searchParams.set('channelId', channelId);
+      return NextResponse.rewrite(url);
+    }
   }
 
-  if (pathname.startsWith('/dm/') && !pathname.includes('[userId]')) {
-    // Log DM path info
-    console.log(`Middleware: Processing DM path: ${pathname}`);
-  }
-
-  // Handle legacy route group
+  // Handle route group access - redirect to the standard route
   if (pathname.startsWith('/(main)')) {
     console.log(`Middleware: Redirecting route group path: ${pathname}`);
     const newPath = pathname.replace('/(main)', '/main');
@@ -39,13 +43,14 @@ export function middleware(request: NextRequest) {
   return response;
 }
 
-// Only run middleware on specific paths
+// Configure matcher for the middleware
 export const config = {
   matcher: [
+    // Match specific routes that need handling
     '/',
     '/channels/:path*',
     '/dm/:path*',
-    '/mentions',
+    '/(main)',
     '/(main)/:path*',
-  ],
+  ]
 }; 

@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "routes": [
+    { "src": "^/$", "dest": "/main" },
+    { "src": "^/channels/([^/]+)$", "dest": "/channels/[channelId]?channelId=$1" },
+    { "src": "^/channels/([^/]+)/search$", "dest": "/channels/[channelId]/search?channelId=$1" },
+    { "src": "^/channels/([^/]+)/thread/([^/]+)$", "dest": "/channels/[channelId]/thread/[messageId]?channelId=$1&messageId=$2" },
+    { "src": "^/dm/([^/]+)$", "dest": "/dm/[userId]?userId=$1" },
+    { "src": "^/(main)/(.*)", "dest": "/main/$2" }
+  ]
+} 
