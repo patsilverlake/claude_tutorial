@@ -1,22 +1,29 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next",
-      "config": {
-        "buildCommand": "npm run vercel-build"
-      }
-    }
+  "buildCommand": "npm run vercel-build",
+  "regions": ["iad1"],
+  "rewrites": [
+    { "source": "/", "destination": "/main" },
+    { "source": "/(main)/:path*", "destination": "/main/:path*" },
+    { "source": "/(.*)", "destination": "/$1" }
   ],
-  "routes": [
+  "headers": [
     {
-      "src": "/(main)(.*)",
-      "dest": "/main$2"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
     }
   ]
 } 

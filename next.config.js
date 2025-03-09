@@ -17,9 +17,23 @@ const nextConfig = {
   // External packages that should be treated as server packages
   serverExternalPackages: [],
   output: 'standalone',
+  // Enhanced redirects to ensure paths work correctly
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/main',
+        permanent: true,
+      },
+    ];
+  },
   async rewrites() {
     return [
       // Handle route group issues by explicitly mapping routes
+      {
+        source: '/(main)/:path*',
+        destination: '/main/:path*',
+      },
       {
         source: '/',
         destination: '/main',
