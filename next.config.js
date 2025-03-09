@@ -10,6 +10,10 @@ const nextConfig = {
     // your project has type errors.
     ignoreBuildErrors: true,
   },
+  images: {
+    domains: ['api.dicebear.com'],
+    unoptimized: true,
+  },
   experimental: {
     // Improve route group handling
     optimizePackageImports: ['lucide-react'],
@@ -17,28 +21,46 @@ const nextConfig = {
   // External packages that should be treated as server packages
   serverExternalPackages: [],
   output: 'standalone',
-  // Enhanced redirects to ensure paths work correctly
+  trailingSlash: false,
+  // Simplified config with essential redirects only
   async redirects() {
     return [
       {
         source: '/',
         destination: '/main',
-        permanent: true,
+        permanent: false,
       },
     ];
   },
+  // Rewrite all dynamic routes properly
   async rewrites() {
-    return [
-      // Handle route group issues by explicitly mapping routes
-      {
-        source: '/(main)/:path*',
-        destination: '/main/:path*',
-      },
-      {
-        source: '/',
-        destination: '/main',
-      },
-    ];
+    return {
+      beforeFiles: [
+        // Handle channels
+        {
+          source: '/channels/:channelId',
+          destination: '/channels/[channelId]',
+        },
+        {
+          source: '/channels/:channelId/search',
+          destination: '/channels/[channelId]/search',
+        },
+        {
+          source: '/channels/:channelId/thread/:messageId',
+          destination: '/channels/[channelId]/thread/[messageId]',
+        },
+        // Handle DMs
+        {
+          source: '/dm/:userId',
+          destination: '/dm/[userId]',
+        },
+        // Handle route group redirect
+        {
+          source: '/(main)/:path*',
+          destination: '/main/:path*',
+        },
+      ],
+    };
   },
   // Exclude problematic route groups from the build
   pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
