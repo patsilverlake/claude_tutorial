@@ -5,6 +5,7 @@ import { Send, Paperclip, Smile } from "lucide-react";
 import { createMessage } from "@/lib/actions/messages";
 import { useUnreadState } from "@/lib/store/use-unread-state";
 import { containsMention } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface MessageInputProps {
   channelId: string;
@@ -48,17 +49,20 @@ export function MessageInput({
     setIsSubmitting(true);
     
     try {
-      // Clear input
+      // Store the content before clearing the input
+      const messageContent = content.trim();
+      
+      // Clear input immediately for better UX
       setContent("");
       
       // Send to server
-      await createMessage(content.trim(), userId || "current-user", channelId, parentId);
+      await createMessage(messageContent, userId || "current-user", channelId, parentId);
       
       // For channel messages
       if (channelId && !userId) {
         // Check if the message contains mentions - this is just a placeholder
         // In a real app, you'd check against all users in the channel
-        const hasMention = containsMention(content, "admin"); 
+        const hasMention = containsMention(messageContent, "admin"); 
         
         // Increment unread count for all users except the sender
         incrementChannelUnread(channelId, hasMention);
@@ -80,7 +84,7 @@ export function MessageInput({
   
   return (
     <div className="flex items-end gap-2">
-      <div className="relative flex-1">
+      <div className="relative flex-1 rounded-md border border-slate-200 bg-white overflow-hidden">
         <textarea
           ref={textareaRef}
           value={content}
@@ -88,31 +92,39 @@ export function MessageInput({
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           rows={1}
-          className="w-full resize-none rounded-md border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full resize-none px-3 py-2 pr-16 text-sm focus:outline-none"
           style={{ maxHeight: "200px" }}
+          disabled={isSubmitting}
         />
         <div className="absolute bottom-2 right-2 flex items-center gap-1">
-          <button
+          <Button
             type="button"
-            className="text-slate-400 hover:text-slate-600"
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 rounded-full"
+            disabled={isSubmitting}
           >
-            <Paperclip className="h-5 w-5" />
-          </button>
-          <button
+            <Paperclip className="h-4 w-4" />
+          </Button>
+          <Button
             type="button"
-            className="text-slate-400 hover:text-slate-600"
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 rounded-full"
+            disabled={isSubmitting}
           >
-            <Smile className="h-5 w-5" />
-          </button>
+            <Smile className="h-4 w-4" />
+          </Button>
         </div>
       </div>
-      <button
+      <Button
         onClick={handleSubmit}
         disabled={!content.trim() || isSubmitting}
-        className="flex h-9 w-9 items-center justify-center rounded-md bg-blue-500 text-white hover:bg-blue-600 disabled:opacity-50"
+        size="icon"
+        className="h-10 w-10 rounded-full"
       >
-        <Send className="h-5 w-5" />
-      </button>
+        <Send className="h-4 w-4" />
+      </Button>
     </div>
   );
 } 
