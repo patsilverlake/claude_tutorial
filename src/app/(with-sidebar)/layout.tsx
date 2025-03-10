@@ -6,7 +6,7 @@ import { Header } from "@/components/layout/header"
 import { useSidebarState } from "@/lib/store/use-sidebar-state"
 import { useMd } from "@/lib/hooks/use-media-query"
 
-export default function MainLayout({
+export default function WithSidebarLayout({
   children,
 }: {
   children: React.ReactNode

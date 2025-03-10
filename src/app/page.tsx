@@ -7,6 +7,7 @@ export default function HomePage() {
   const router = useRouter();
   
   useEffect(() => {
+    // Redirect to the main page in the with-sidebar route group
     router.push('/main');
   }, [router]);
   

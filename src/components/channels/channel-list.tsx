@@ -25,63 +25,51 @@ export function ChannelList() {
         setLoading(true);
       }
 
-      // Fetch channels with a timeout to prevent infinite loading
+      // Fetch channels with a higher timeout to prevent false timeouts
       const timeoutPromise = new Promise<Channel[]>((_, reject) => 
-        setTimeout(() => reject(new Error("Request timed out")), 5000)
+        setTimeout(() => reject(new Error("Request timed out")), 15000)
       );
       
-      const fetchPromise = getChannels();
-      const channelData = await Promise.race([fetchPromise, timeoutPromise]);
-      
-      if (channelData.length === 0 && !isRetry) {
-        // If no channels and not a retry, check cached channels first
+      try {
+        const fetchPromise = getChannels();
+        const channelData = await Promise.race([fetchPromise, timeoutPromise]);
+        
+        // Store channels in localStorage for fallback
+        localStorage.setItem('cachedChannels', JSON.stringify(channelData));
+        
+        setChannels(channelData);
+        setError(null);
+        setLoading(false);
+        setIsRetrying(false);
+      } catch (fetchError) {
+        console.error("Error fetching channels:", fetchError);
+        
+        // Try to use cached data if available
         const cachedChannels = localStorage.getItem('cachedChannels');
         if (cachedChannels) {
           try {
             const parsed = JSON.parse(cachedChannels);
             setChannels(parsed);
             console.log("Using cached channels data");
-            // Set a soft error that doesn't block UI
             setError("Using cached data. Live connection unavailable.");
-            setLoading(false);
-            setIsRetrying(false);
-            return;
-          } catch (e) {
-            console.error("Failed to parse cached channels:", e);
+          } catch (parseError) {
+            console.error("Failed to parse cached channels:", parseError);
+            setError("Failed to load channels. Please try again.");
           }
+        } else {
+          setError("Failed to load channels. Please try again.");
         }
+        
+        setLoading(false);
+        setIsRetrying(false);
       }
-      
-      setChannels(channelData);
-      setError(null);
-    } catch (err) {
-      console.error("Error fetching channels:", err);
-      const errorMessage = err instanceof Error 
-        ? err.message 
-        : "Failed to load channels";
-      
-      setError(errorMessage);
-      
-      // Try to use cached data as fallback
-      if (channels.length === 0) {
-        const cachedChannels = localStorage.getItem('cachedChannels');
-        if (cachedChannels) {
-          try {
-            const parsed = JSON.parse(cachedChannels);
-            setChannels(parsed);
-            console.log("Using cached channels data after error");
-            // Indicate we're using cached data
-            setError("Using cached data. Connection error: " + errorMessage);
-          } catch (e) {
-            console.error("Failed to parse cached channels:", e);
-          }
-        }
-      }
-    } finally {
+    } catch (error) {
+      console.error("Channel list error:", error);
+      setError("Failed to load channels. Please try again.");
       setLoading(false);
       setIsRetrying(false);
     }
-  }, [channels.length]);
+  }, []);
 
   // Call fetchChannels when the component mounts
   useEffect(() => {
